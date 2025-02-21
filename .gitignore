@@ -1,0 +1,6 @@
+# Ignore all subdirectories
+*/*
+
+*.uf2
+*.bin
+*.csv
