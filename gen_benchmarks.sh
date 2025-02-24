@@ -51,6 +51,21 @@ run_benchmarks () {
     ret=$( TIMEFORMAT="%R"; { time $picotool info -a >/dev/null; } 2>&1 )
     echo "    info_all:   $ret"
     echo "$version,$board,$size,$bin,info_all,$ret" >> out.csv
+
+    run_coprodis
+}
+
+run_coprodis () {
+    rm tmp.dis
+    cp build/bench.dis tmp.dis
+
+    for i in $(seq 1 $(($size / $bin_size))); do
+        cat build/bench.dis >> tmp.dis
+    done
+
+    ret=$( TIMEFORMAT="%R"; { time $picotool coprodis tmp.dis tmp.dis >/dev/null; } 2>&1 )
+    echo "    coprodis:   $ret"
+    echo "$version,$board,$size,$bin,coprodis,$ret" >> out.csv
 }
 
 declare -a sizes=(128 256 512 1024 2048 4096)
